@@ -1,10 +1,25 @@
+import { useState } from "react";
+import { Content } from "./components/Content";
+import { Footer } from "./components/Footer";
+import { Header } from "./components/Header";
+import { Sidebar } from "./app/layout/Sidebar";
+import type { Page } from "./app/layout/page.types";
+
 function App() {
+  const [activePage, setActivePage] = useState<Page>("Dashboard");
+
   return (
-    <main className="flex min-h-screen items-center justify-center bg-slate-950 px-6 text-white">
-      <h1 className="text-3xl font-semibold">DocuFlow AWS</h1>
-    </main>
+    <div className="min-h-screen bg-white text-slate-950">
+      <Header />
+
+      <div className="flex min-h-[calc(100vh-6rem)]">
+        <Sidebar activePage={activePage} onPageChange={setActivePage} />
+        <Content activePage={activePage} />
+      </div>
+
+      <Footer />
+    </div>
   );
 }
 
 export default App;
-
