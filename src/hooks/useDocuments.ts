@@ -1,7 +1,7 @@
-import { mockDocuments } from "../data/mockDocuments";
+import { useDocumentContext } from "../context/DocumentContext";
 
 export function useDocuments() {
-  const documents = mockDocuments;
+  const { documents } = useDocumentContext();
 
   const totalDocuments = documents.length;
 
