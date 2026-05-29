@@ -1,5 +1,7 @@
 import { Link, useParams } from "react-router-dom";
+import { DocumentMetadata } from "../components/documents/DocumentMetadata";
 import { DocumentStatusBadge } from "../components/documents/DocumentStatusBadge";
+import { DocumentTimeline } from "../components/documents/DocumentTimeline";
 import { useDocuments } from "../hooks/useDocuments";
 import { formatDate } from "../utils/formatDate";
 import { formatFileSize } from "../utils/formatFileSize";
@@ -80,6 +82,11 @@ export function DocumentDetails() {
             <DocumentStatusBadge status={document.status} />
           </div>
         </div>
+      </div>
+
+      <div className="grid gap-6 xl:grid-cols-[1fr_360px]">
+        <DocumentMetadata metadata={document.metadata} />
+        <DocumentTimeline status={document.status} />
       </div>
     </section>
   );
