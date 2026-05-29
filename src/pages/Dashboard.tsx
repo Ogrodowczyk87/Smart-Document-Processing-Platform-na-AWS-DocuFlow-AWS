@@ -28,10 +28,7 @@ export function Dashboard() {
         <StatCard label="Processing" value={processingDocuments} />
         <StatCard label="Completed" value={completedDocuments} />
         <StatCard label="Failed" value={failedDocuments} />
-        <StatCard
-          label="Storage Used"
-          value={formatFileSize(storageUsed)}
-        />
+        <StatCard label="Storage Used" value={formatFileSize(storageUsed)} />
       </div>
 
       <RecentDocumentsTable documents={documents.slice(0, 5)} />
