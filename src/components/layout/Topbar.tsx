@@ -1,4 +1,5 @@
 import { NavLink } from "react-router-dom";
+import docuflowLogo from "../../assets/docuflow_aws_logo.svg";
 
 const mobileNavigationItems = [
   { label: "Dashboard", path: "/" },
@@ -11,8 +12,12 @@ export function Topbar() {
   return (
     <header className="sticky top-0 z-10 border-b border-slate-200 bg-white/95 backdrop-blur">
       <div className="flex min-h-16 items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
-        <div>
-          <p className="text-sm font-semibold text-slate-950">DocuFlow</p>
+        <div className="flex items-center gap-3">
+          <img
+            src={docuflowLogo}
+            alt="DocuFlow AWS"
+            className="h-auto w-32 sm:w-40 lg:hidden"
+          />
           <p className="text-xs text-slate-500">Local frontend MVP</p>
         </div>
         <div className="rounded-md border border-slate-200 px-3 py-1.5 text-xs font-medium text-slate-600">

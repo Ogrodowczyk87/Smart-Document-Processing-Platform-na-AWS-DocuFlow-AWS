@@ -1,4 +1,5 @@
 import { NavLink } from "react-router-dom";
+import docuflowLogo from "../../assets/docuflow_aws_logo.svg";
 
 const navigationItems = [
   { label: "Dashboard", path: "/" },
@@ -11,12 +12,11 @@ export function Sidebar() {
   return (
     <aside className="hidden fixed inset-y-0 left-0 z-20 w-64 border-r border-slate-200 bg-white px-4 py-5 lg:block">
       <div className="mb-8 px-2">
-        <p className="text-xs font-semibold uppercase tracking-wide text-sky-700">
-          DocuFlow AWS
-        </p>
-        <h1 className="mt-2 text-xl font-semibold text-slate-950">
-          Smart Documents
-        </h1>
+        <img
+          src={docuflowLogo}
+          alt="DocuFlow AWS"
+          className="h-auto w-44"
+        />
       </div>
 
       <nav aria-label="Main navigation" className="space-y-1">
