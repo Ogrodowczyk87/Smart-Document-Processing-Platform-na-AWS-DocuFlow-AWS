@@ -1,4 +1,16 @@
+import { useState } from "react";
+import { UploadDropzone } from "../components/upload/UploadDropzone";
+import { UploadProgress } from "../components/upload/UploadProgress";
+
 export function Upload() {
+  const [selectedFileName, setSelectedFileName] = useState<string | null>(null);
+  const [progress, setProgress] = useState(0);
+
+  function handleFileSelect(file: File) {
+    setSelectedFileName(file.name);
+    setProgress(100);
+  }
+
   return (
     <section className="space-y-6">
       <div>
@@ -8,12 +20,17 @@ export function Upload() {
         </p>
       </div>
 
-      <div className="rounded-md border border-dashed border-slate-300 bg-white p-10 text-center shadow-sm">
-        <p className="text-sm font-medium text-slate-700">Upload dropzone</p>
-        <p className="mt-2 text-sm text-slate-500">
-          Drag and drop validation will be added in the upload stage.
-        </p>
-      </div>
+      <UploadDropzone onFileSelect={handleFileSelect} />
+
+      {selectedFileName && (
+        <div className="rounded-md border border-slate-200 bg-white p-4 shadow-sm">
+          <p className="text-sm font-medium text-slate-950">
+            Selected file: {selectedFileName}
+          </p>
+        </div>
+      )}
+
+      {progress > 0 && <UploadProgress progress={progress} />}
     </section>
   );
 }
