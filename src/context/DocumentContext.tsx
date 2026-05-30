@@ -4,6 +4,7 @@ import type { Document } from "../types/document";
 
 type DocumentContextValue = {
   documents: Document[];
+  addDocument: (document: Document) => void;
 };
 
 const DocumentContext = createContext<DocumentContextValue | null>(null);
@@ -13,10 +14,14 @@ type DocumentProviderProps = {
 };
 
 export function DocumentProvider({ children }: DocumentProviderProps) {
-  const [documents] = useState<Document[]>(mockDocuments);
+  const [documents, setDocuments] = useState<Document[]>(mockDocuments);
+
+  function addDocument(document: Document) {
+    setDocuments((currentDocuments) => [document, ...currentDocuments]);
+  }
 
   return (
-    <DocumentContext.Provider value={{ documents }}>
+    <DocumentContext.Provider value={{ documents, addDocument }}>
       {children}
     </DocumentContext.Provider>
   );
