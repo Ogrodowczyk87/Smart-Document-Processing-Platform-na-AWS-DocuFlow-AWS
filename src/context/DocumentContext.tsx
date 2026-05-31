@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { mockDocuments } from "../data/mockDocuments";
 import type { Document, DocumentStatus } from "../types/document";
 
@@ -15,8 +15,29 @@ type DocumentProviderProps = {
   children: React.ReactNode;
 };
 
+const STORAGE_KEY = "docuflow-documents";
+
+function getInitialDocuments(): Document[] {
+  const savedDocuments = localStorage.getItem(STORAGE_KEY);
+
+  if (!savedDocuments) {
+    return mockDocuments;
+  }
+
+  try {
+    return JSON.parse(savedDocuments) as Document[];
+  } catch {
+    return mockDocuments;
+  }
+}
+
 export function DocumentProvider({ children }: DocumentProviderProps) {
-  const [documents, setDocuments] = useState<Document[]>(mockDocuments);
+  const [documents, setDocuments] =
+    useState<Document[]>(getInitialDocuments);
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(documents));
+  }, [documents]);
 
   function addDocument(document: Document) {
     setDocuments((currentDocuments) => [document, ...currentDocuments]);
