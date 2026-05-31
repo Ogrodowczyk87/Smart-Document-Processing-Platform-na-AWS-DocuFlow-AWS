@@ -2,6 +2,7 @@ import { Link, useParams } from "react-router-dom";
 import { DocumentMetadata } from "../components/documents/DocumentMetadata";
 import { DocumentStatusBadge } from "../components/documents/DocumentStatusBadge";
 import { DocumentTimeline } from "../components/documents/DocumentTimeline";
+import { ProcessingLogs } from "../components/documents/ProcessingLogs";
 import { useDocuments } from "../hooks/useDocuments";
 import { formatDate } from "../utils/formatDate";
 import { formatFileSize } from "../utils/formatFileSize";
@@ -88,6 +89,7 @@ export function DocumentDetails() {
         <DocumentMetadata metadata={document.metadata} />
         <DocumentTimeline status={document.status} />
       </div>
+      <ProcessingLogs logs={document.processingLogs} />
     </section>
   );
 }

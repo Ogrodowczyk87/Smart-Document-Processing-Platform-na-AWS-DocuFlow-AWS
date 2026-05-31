@@ -1,36 +1,50 @@
 # DocuFlow AWS
 
-Smart Document Processing Platform built as a serverless-first AWS project.
+DocuFlow AWS is a smart document processing platform designed as a serverless-first AWS project.
 
-The goal of the project is to create a document processing platform where users can upload files, track processing status, inspect extracted metadata, and later run the workflow through AWS services such as S3, DynamoDB, Lambda, API Gateway, Step Functions, CloudWatch, and Cognito.
+The goal is to provide a complete document workflow: upload files, store metadata, track processing status, inspect extracted information, monitor errors, and later run the backend through managed AWS services.
 
-## Current Status
+## Project Status
 
-The project is currently in the local frontend MVP stage. AWS services are not connected yet.
+The project is currently a local frontend MVP. AWS services are intentionally not connected yet.
 
-The current application focuses on the local user flow:
+The implemented workflow allows users to:
 
 ```txt
-View dashboard
-Browse documents
-Open document details
-Inspect metadata and processing timeline
+Upload a document
+  |
+  v
+Validate file type and size
+  |
+  v
+Display simulated upload progress
+  |
+  v
+Add the document to the local application state
+  |
+  v
+View the document in the dashboard and documents table
+  |
+  v
+Inspect document details, metadata, and processing timeline
 ```
 
-## Features
+## Implemented Features
 
-- React application layout with sidebar and topbar
-- Client-side routing
-- Dashboard with document statistics
-- Recent documents table
-- Processing activity panel
-- Documents page with search, status filtering, and date sorting
-- Document details page
-- Document metadata display
-- Processing timeline
-- Mock document data
+- Responsive application layout with sidebar, topbar, and DocuFlow branding
+- Client-side routing with React Router
+- Dashboard with document statistics, recent documents, and processing activity
+- Documents page with search, status filtering, and upload date sorting
+- Document details page with metadata and processing timeline
+- Local mock data for realistic document states
+- Shared document state through React Context
+- Upload page with drag and drop support
+- PDF, TXT, and CSV file validation
+- 5 MB upload size limit
+- Simulated upload progress
+- Local document creation after upload
 
-## Tech Stack
+## Technology Stack
 
 - Vite
 - React
@@ -42,10 +56,13 @@ Inspect metadata and processing timeline
 
 ```txt
 src/
+  assets/
   components/
     dashboard/
     documents/
     layout/
+    upload/
+  context/
   data/
   hooks/
   pages/
@@ -80,29 +97,18 @@ Preview the production build:
 npm run preview
 ```
 
-## Roadmap
+## Planned AWS Architecture
 
-### Frontend MVP
+The target serverless architecture will use:
 
-- Upload UI
-- Fake upload progress
-- Local document creation
-- Simulated processing workflow
-- Failed processing simulation
-- More complete document details view
-
-### AWS Backend
-
-- S3 document storage
-- DynamoDB document metadata
-- API Gateway endpoints
-- Lambda handlers
-- Step Functions processing workflow
-- CloudWatch logs and metrics
-- Cognito authentication
-- AWS CDK infrastructure
-
-## AWS Architecture Target
+- Amazon S3 for document storage
+- Amazon DynamoDB for document metadata
+- Amazon API Gateway for frontend API endpoints
+- AWS Lambda for backend handlers
+- AWS Step Functions for document processing workflows
+- Amazon CloudWatch for logs and monitoring
+- Amazon Cognito for authentication
+- AWS CDK for infrastructure as code
 
 Planned high-level flow:
 
@@ -123,6 +129,22 @@ Lambda
         CloudWatch Logs
 ```
 
-## Important Note
+## Next Steps
 
-The project intentionally starts without AWS integration. The local frontend workflow should be completed first, then real AWS services will be connected step by step.
+- Add simulated document processing workflow
+- Add Process and Retry actions
+- Add failed processing simulation
+- Persist local documents between browser sessions
+- Prepare backend Lambda handlers
+- Add AWS CDK infrastructure
+- Connect S3, DynamoDB, API Gateway, and Step Functions
+
+## Operational Proof of Concept
+
+An **Operational Proof of Concept and Business Rationale** document has been prepared and presented to managers in PDF format.
+
+The document demonstrates the operational value of the proposed solution, including automated workforce allocation, editable assignment boards, manual adjustment options, special role coverage, training record management, and a real-time display board concept.
+
+## Development Approach
+
+The project intentionally starts with a complete local frontend workflow before AWS integration. This allows the user experience and processing flow to be validated first, while the backend services can be connected incrementally in the next stages.
