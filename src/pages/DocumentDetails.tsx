@@ -3,6 +3,7 @@ import { DocumentMetadata } from "../components/documents/DocumentMetadata";
 import { DocumentStatusBadge } from "../components/documents/DocumentStatusBadge";
 import { DocumentTimeline } from "../components/documents/DocumentTimeline";
 import { ProcessingLogs } from "../components/documents/ProcessingLogs";
+import { useDocumentContext } from "../context/DocumentContext";
 import { useDocuments } from "../hooks/useDocuments";
 import { formatDate } from "../utils/formatDate";
 import { formatFileSize } from "../utils/formatFileSize";
@@ -10,6 +11,7 @@ import { formatFileSize } from "../utils/formatFileSize";
 export function DocumentDetails() {
   const { id } = useParams();
   const { documents } = useDocuments();
+  const { startProcessing } = useDocumentContext();
 
   const document = documents.find((document) => document.id === id);
 
@@ -32,6 +34,9 @@ export function DocumentDetails() {
     );
   }
 
+  const canProcess = document.status === "UPLOADED";
+  const canRetry = document.status === "FAILED";
+
   return (
     <section className="space-y-6">
       <div>
@@ -49,7 +54,29 @@ export function DocumentDetails() {
             </p>
           </div>
 
-          <DocumentStatusBadge status={document.status} />
+          <div className="flex items-center gap-3">
+            <DocumentStatusBadge status={document.status} />
+
+            {canProcess && (
+              <button
+                type="button"
+                onClick={() => startProcessing(document.id)}
+                className="rounded-md bg-sky-600 px-3 py-2 text-sm font-semibold text-white hover:bg-sky-700"
+              >
+                Process
+              </button>
+            )}
+
+            {canRetry && (
+              <button
+                type="button"
+                onClick={() => startProcessing(document.id)}
+                className="rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white hover:bg-red-700"
+              >
+                Retry
+              </button>
+            )}
+          </div>
         </div>
       </div>
 
@@ -89,6 +116,7 @@ export function DocumentDetails() {
         <DocumentMetadata metadata={document.metadata} />
         <DocumentTimeline status={document.status} />
       </div>
+
       <ProcessingLogs logs={document.processingLogs} />
     </section>
   );
