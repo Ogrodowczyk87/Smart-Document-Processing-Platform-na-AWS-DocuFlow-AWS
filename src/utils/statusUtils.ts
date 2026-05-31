@@ -15,12 +15,12 @@ export function getStatusLabel(status: DocumentStatus) {
 
 export function getStatusColorClasses(status: DocumentStatus) {
   const colors: Record<DocumentStatus, string> = {
-    UPLOADED: "bg-yellow-50 text-yellow-800 ring-yellow-200",
-    VALIDATING: "bg-blue-50 text-blue-800 ring-blue-200",
-    EXTRACTING_METADATA: "bg-purple-50 text-purple-800 ring-purple-200",
-    PROCESSING: "bg-blue-50 text-blue-800 ring-blue-200",
-    COMPLETED: "bg-green-50 text-green-800 ring-green-200",
-    FAILED: "bg-red-50 text-red-800 ring-red-200",
+    UPLOADED: "bg-[#fff3d8] text-[#8a5a13] ring-[#efd7a8]",
+    VALIDATING: "bg-[#e8f5f2] text-[#12635c] ring-[#b6ddd7]",
+    EXTRACTING_METADATA: "bg-[#eee9f8] text-[#67538f] ring-[#d4c8eb]",
+    PROCESSING: "bg-[#e5eef5] text-[#315f7a] ring-[#bfd2df]",
+    COMPLETED: "bg-[#e8f4e9] text-[#387247] ring-[#bfdbc4]",
+    FAILED: "bg-[#fff0ec] text-[#a44735] ring-[#efc4b8]",
   };
 
   return colors[status];

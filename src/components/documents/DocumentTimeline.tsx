@@ -33,9 +33,9 @@ export function DocumentTimeline({ status }: DocumentTimelineProps) {
   const currentIndex = flow.indexOf(status);
 
   return (
-    <div className="rounded-md border border-slate-200 bg-white shadow-sm">
-      <div className="border-b border-slate-200 px-4 py-3">
-        <h3 className="text-sm font-semibold text-slate-950">
+    <div className="surface-panel">
+      <div className="surface-header">
+        <h3 className="surface-title">
           Processing Timeline
         </h3>
       </div>
@@ -52,10 +52,10 @@ export function DocumentTimeline({ status }: DocumentTimelineProps) {
                 className={[
                   "mt-0.5 flex h-6 w-6 items-center justify-center rounded-full text-xs font-semibold ring-1",
                   isFailed && isCurrent
-                    ? "bg-red-600 text-white ring-red-600"
+                    ? "bg-[#b34c38] text-white ring-[#b34c38]"
                     : isCompleted || isCurrent
-                      ? "bg-sky-600 text-white ring-sky-600"
-                      : "bg-white text-slate-400 ring-slate-300",
+                      ? "bg-[#0b756d] text-white ring-[#0b756d]"
+                      : "bg-[#fffefa] text-[#9aa29e] ring-[#d4cec2]",
                 ].join(" ")}
               >
                 {index + 1}
@@ -65,13 +65,13 @@ export function DocumentTimeline({ status }: DocumentTimelineProps) {
                 <p
                   className={[
                     "text-sm font-medium",
-                    isCurrent ? "text-slate-950" : "text-slate-600",
+                    isCurrent ? "text-[#253532]" : "text-[#68746f]",
                   ].join(" ")}
                 >
                   {statusLabels[step]}
                 </p>
 
-                <p className="mt-0.5 text-xs text-slate-500">
+                <p className="mt-0.5 text-xs text-[#87908d]">
                   {isCurrent
                     ? "Current status"
                     : isCompleted

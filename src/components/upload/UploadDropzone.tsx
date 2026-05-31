@@ -65,7 +65,7 @@ export function UploadDropzone({ onFileSelect, error }: UploadDropzoneProps) {
     <label
       onDrop={handleDrop}
       onDragOver={handleDragOver}
-      className="flex cursor-pointer flex-col items-center justify-center rounded-md border border-dashed border-slate-300 bg-white p-10 text-center shadow-sm hover:border-sky-400 hover:bg-sky-50"
+      className="flex min-h-72 cursor-pointer flex-col items-center justify-center border-2 border-dashed border-[#b9b2a5] bg-[#fffefa] p-10 text-center hover:border-[#0b756d] hover:bg-[#eef7f4]"
     >
       <input
         type="file"
@@ -74,15 +74,19 @@ export function UploadDropzone({ onFileSelect, error }: UploadDropzoneProps) {
         className="sr-only"
       />
 
-      <p className="text-sm font-semibold text-slate-950">
+      <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#087f75]">
+        Document intake
+      </p>
+
+      <p className="mt-3 text-lg font-semibold text-[#253532]">
         Drop a document here or click to upload
       </p>
 
-      <p className="mt-2 text-sm text-slate-500">
+      <p className="mt-2 text-sm text-[#74807c]">
         PDF, TXT, or CSV up to 5 MB
       </p>
 
-      {error && <p className="mt-3 text-sm font-medium text-red-600">{error}</p>}
+      {error && <p className="mt-3 text-sm font-semibold text-[#b34c38]">{error}</p>}
     </label>
   );
 }

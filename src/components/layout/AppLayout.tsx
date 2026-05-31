@@ -4,11 +4,11 @@ import { Topbar } from "./Topbar";
 
 export function AppLayout() {
   return (
-    <div className="min-h-screen bg-slate-100 text-slate-950">
+    <div className="min-h-screen bg-[#f5f3ee] text-[#17211f]">
       <Sidebar />
-      <div className="min-h-screen lg:pl-64">
+      <div className="min-h-screen lg:pl-72">
         <Topbar />
-        <main className="px-4 py-6 sm:px-6 lg:px-8">
+        <main className="mx-auto max-w-[1560px] px-4 py-7 sm:px-6 lg:px-10 lg:py-9">
           <Outlet />
         </main>
       </div>

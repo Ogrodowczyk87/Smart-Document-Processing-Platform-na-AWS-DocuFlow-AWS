@@ -67,10 +67,11 @@ export function Upload() {
   }
 
   return (
-    <section className="space-y-6">
+    <section className="space-y-7">
       <div>
-        <h2 className="text-2xl font-semibold text-slate-950">Upload</h2>
-        <p className="mt-1 text-sm text-slate-600">
+        <p className="page-eyebrow">New document</p>
+        <h2 className="page-title">Upload workspace</h2>
+        <p className="page-description">
           Add PDF, TXT, or CSV files to the local document workflow.
         </p>
       </div>
@@ -78,19 +79,19 @@ export function Upload() {
       <UploadDropzone onFileSelect={handleFileSelect} />
 
       {selectedFileName && (
-        <div className="rounded-md border border-slate-200 bg-white p-4 shadow-sm">
-          <p className="text-sm font-medium text-slate-950">
+        <div className="surface-panel border-l-4 border-l-[#e1a33e] p-4">
+          <p className="text-sm font-semibold text-[#253532]">
             Selected file: {selectedFileName}
           </p>
 
           {isUploading && (
-            <p className="mt-1 text-sm text-slate-500">
+            <p className="mt-1 text-sm text-[#74807c]">
               Uploading file locally...
             </p>
           )}
 
           {successMessage && (
-            <p className="mt-1 text-sm font-medium text-green-700">
+            <p className="mt-1 text-sm font-semibold text-[#387247]">
               {successMessage}
             </p>
           )}

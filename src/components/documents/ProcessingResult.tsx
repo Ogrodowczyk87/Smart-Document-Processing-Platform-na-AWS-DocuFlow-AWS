@@ -11,11 +11,11 @@ type ProcessingResultProps = {
 export function ProcessingResult({ status, result }: ProcessingResultProps) {
   if (status === "FAILED") {
     return (
-      <div className="rounded-md border border-red-200 bg-red-50 p-4 shadow-sm">
-        <h3 className="text-sm font-semibold text-red-900">
+      <div className="border border-[#efc4b8] bg-[#fff0ec] p-4">
+        <h3 className="surface-title text-[#a44735]">
           Processing Result
         </h3>
-        <p className="mt-2 text-sm text-red-700">
+        <p className="mt-2 text-sm text-[#9b4938]">
           Document processing failed. Retry the workflow to generate a result.
         </p>
       </div>
@@ -24,11 +24,11 @@ export function ProcessingResult({ status, result }: ProcessingResultProps) {
 
   if (status !== "COMPLETED") {
     return (
-      <div className="rounded-md border border-slate-200 bg-white p-4 shadow-sm">
-        <h3 className="text-sm font-semibold text-slate-950">
+      <div className="surface-panel p-4">
+        <h3 className="surface-title">
           Processing Result
         </h3>
-        <p className="mt-2 text-sm text-slate-500">
+        <p className="mt-2 text-sm text-[#74807c]">
           The processing result will be available after the workflow is
           completed.
         </p>
@@ -37,27 +37,27 @@ export function ProcessingResult({ status, result }: ProcessingResultProps) {
   }
 
   return (
-    <div className="rounded-md border border-green-200 bg-green-50 p-4 shadow-sm">
-      <h3 className="text-sm font-semibold text-green-900">
+    <div className="border border-[#bfdbc4] bg-[#e8f4e9] p-4">
+      <h3 className="surface-title text-[#387247]">
         Processing Result
       </h3>
 
-      <p className="mt-2 text-sm text-green-800">
+      <p className="mt-2 text-sm text-[#416e49]">
         {result?.summary ?? "Document processing completed successfully."}
       </p>
 
       {result?.confidence !== undefined && (
-        <p className="mt-3 text-xs font-medium uppercase text-green-700">
+        <p className="mt-3 text-[11px] font-bold uppercase tracking-[0.12em] text-[#387247]">
           Confidence: {Math.round(result.confidence * 100)}%
         </p>
       )}
 
       {result?.extractedText && (
-        <div className="mt-4 border-t border-green-200 pt-4">
-          <p className="text-xs font-semibold uppercase text-green-700">
+        <div className="mt-4 border-t border-[#bfdbc4] pt-4">
+          <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-[#387247]">
             Extracted Text
           </p>
-          <p className="mt-2 whitespace-pre-wrap text-sm text-green-900">
+          <p className="mt-2 whitespace-pre-wrap text-sm text-[#416e49]">
             {result.extractedText}
           </p>
         </div>

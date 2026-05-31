@@ -51,26 +51,27 @@ export function Documents() {
   }, [documents, searchQuery, statusFilter, sortDirection]);
 
   return (
-    <section className="space-y-6">
+    <section className="space-y-7">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h2 className="text-2xl font-semibold text-slate-950">Documents</h2>
-          <p className="mt-1 text-sm text-slate-600">
+          <p className="page-eyebrow">Document registry</p>
+          <h2 className="page-title">All documents</h2>
+          <p className="page-description">
             Browse uploaded files and inspect processing status.
           </p>
         </div>
 
         <Link
           to="/upload"
-          className="inline-flex h-10 items-center justify-center rounded-md bg-sky-600 px-4 text-sm font-semibold text-white hover:bg-sky-700"
+          className="primary-action"
         >
           Upload document
         </Link>
       </div>
 
-      <div className="grid gap-3 rounded-md border border-slate-200 bg-white p-4 shadow-sm lg:grid-cols-[1fr_220px_180px]">
+      <div className="surface-panel grid gap-4 border-l-4 border-l-[#e1a33e] p-5 lg:grid-cols-[1fr_220px_180px]">
         <label className="block">
-          <span className="mb-1.5 block text-xs font-medium uppercase text-slate-500">
+          <span className="mb-1.5 block text-[11px] font-bold uppercase tracking-[0.12em] text-[#66746f]">
             Search
           </span>
           <input
@@ -78,12 +79,12 @@ export function Documents() {
             value={searchQuery}
             onChange={(event) => setSearchQuery(event.target.value)}
             placeholder="Search by file name"
-            className="h-10 w-full rounded-md border border-slate-300 px-3 text-sm outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
+            className="form-control"
           />
         </label>
 
         <label className="block">
-          <span className="mb-1.5 block text-xs font-medium uppercase text-slate-500">
+          <span className="mb-1.5 block text-[11px] font-bold uppercase tracking-[0.12em] text-[#66746f]">
             Status
           </span>
           <select
@@ -91,7 +92,7 @@ export function Documents() {
             onChange={(event) =>
               setStatusFilter(event.target.value as StatusFilter)
             }
-            className="h-10 w-full rounded-md border border-slate-300 px-3 text-sm outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
+            className="form-control"
           >
             {statusFilters.map((status) => (
               <option key={status} value={status}>
@@ -102,7 +103,7 @@ export function Documents() {
         </label>
 
         <label className="block">
-          <span className="mb-1.5 block text-xs font-medium uppercase text-slate-500">
+          <span className="mb-1.5 block text-[11px] font-bold uppercase tracking-[0.12em] text-[#66746f]">
             Sort
           </span>
           <select
@@ -110,7 +111,7 @@ export function Documents() {
             onChange={(event) =>
               setSortDirection(event.target.value as SortDirection)
             }
-            className="h-10 w-full rounded-md border border-slate-300 px-3 text-sm outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
+            className="form-control"
           >
             <option value="newest">Newest first</option>
             <option value="oldest">Oldest first</option>
@@ -121,11 +122,11 @@ export function Documents() {
       {filteredDocuments.length > 0 ? (
         <DocumentTable documents={filteredDocuments} />
       ) : (
-        <div className="rounded-md border border-slate-200 bg-white p-8 text-center shadow-sm">
-          <p className="text-sm font-medium text-slate-950">
+        <div className="surface-panel p-10 text-center">
+          <p className="text-sm font-semibold text-[#253532]">
             No documents found
           </p>
-          <p className="mt-1 text-sm text-slate-500">
+          <p className="mt-1 text-sm text-[#74807c]">
             Try changing the search phrase or selected status.
           </p>
         </div>

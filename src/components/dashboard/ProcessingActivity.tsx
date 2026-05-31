@@ -23,24 +23,24 @@ export function ProcessingActivity({ documents }: ProcessingActivityProps) {
     .slice(0, 5);
 
   return (
-    <div className="rounded-md border border-slate-200 bg-white shadow-sm">
-      <div className="border-b border-slate-200 px-4 py-3">
-        <h3 className="text-sm font-semibold text-slate-950">
+    <div className="surface-panel">
+      <div className="surface-header">
+        <h3 className="surface-title">
           Processing Activity
         </h3>
       </div>
 
-      <div className="divide-y divide-slate-100">
+      <div className="divide-y divide-[#eeeae2]">
         {activityItems.map((item) => (
           <div
             key={item.id}
-            className="flex flex-col gap-2 px-4 py-3 sm:flex-row sm:items-center sm:justify-between"
+            className="flex flex-col gap-2 border-l-2 border-transparent px-5 py-3 hover:border-[#e1a33e] hover:bg-[#f9f6ef] sm:flex-row sm:items-center sm:justify-between"
           >
             <div>
-              <p className="text-sm font-medium text-slate-950">
+              <p className="text-sm font-semibold text-[#253532]">
                 {item.fileName}
               </p>
-              <p className="mt-1 text-xs text-slate-500">
+              <p className="mt-1 text-xs text-[#74807c]">
                 {formatDate(item.uploadedAt)} - {getStatusLabel(item.status)}
               </p>
             </div>

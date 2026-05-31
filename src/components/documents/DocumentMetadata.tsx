@@ -8,9 +8,9 @@ export function DocumentMetadata({ metadata }: DocumentMetadataProps) {
   const extractedFields = Object.entries(metadata.extractedFields ?? {});
 
   return (
-    <div className="rounded-md border border-slate-200 bg-white shadow-sm">
-      <div className="border-b border-slate-200 px-4 py-3">
-        <h3 className="text-sm font-semibold text-slate-950">Metadata</h3>
+    <div className="surface-panel">
+      <div className="surface-header">
+        <h3 className="surface-title">Extracted metadata</h3>
       </div>
 
       <div className="grid gap-4 p-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -21,18 +21,18 @@ export function DocumentMetadata({ metadata }: DocumentMetadataProps) {
       </div>
 
       {extractedFields.length > 0 && (
-        <div className="border-t border-slate-100 px-4 py-4">
-          <h4 className="text-xs font-semibold uppercase text-slate-500">
+        <div className="border-t border-[#eeeae2] px-4 py-4">
+          <h4 className="text-[11px] font-bold uppercase tracking-[0.12em] text-[#66746f]">
             Extracted Fields
           </h4>
 
           <dl className="mt-3 grid gap-3 sm:grid-cols-2">
             {extractedFields.map(([key, value]) => (
-              <div key={key} className="rounded-md bg-slate-50 p-3">
-                <dt className="text-xs font-medium uppercase text-slate-500">
+              <div key={key} className="border-l-2 border-[#e1a33e] bg-[#f8f5ee] p-3">
+                <dt className="text-[11px] font-bold uppercase tracking-[0.08em] text-[#74807c]">
                   {key}
                 </dt>
-                <dd className="mt-1 text-sm font-medium text-slate-950">
+                <dd className="mt-1 text-sm font-semibold text-[#253532]">
                   {value}
                 </dd>
               </div>
@@ -52,8 +52,8 @@ type MetadataItemProps = {
 function MetadataItem({ label, value }: MetadataItemProps) {
   return (
     <div>
-      <p className="text-xs font-medium uppercase text-slate-500">{label}</p>
-      <p className="mt-1 text-sm font-semibold text-slate-950">
+      <p className="text-[11px] font-bold uppercase tracking-[0.1em] text-[#74807c]">{label}</p>
+      <p className="mt-1 text-sm font-semibold text-[#253532]">
         {value ?? "Not available"}
       </p>
     </div>
