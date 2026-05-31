@@ -7,6 +7,7 @@ import { useDocumentContext } from "../context/DocumentContext";
 import { useDocuments } from "../hooks/useDocuments";
 import { formatDate } from "../utils/formatDate";
 import { formatFileSize } from "../utils/formatFileSize";
+import { ProcessingResult } from "../components/documents/ProcessingResult";
 
 export function DocumentDetails() {
   const { id } = useParams();
@@ -116,6 +117,11 @@ export function DocumentDetails() {
         <DocumentMetadata metadata={document.metadata} />
         <DocumentTimeline status={document.status} />
       </div>
+
+      <ProcessingResult
+        status={document.status}
+        result={document.processingResult}
+      />
 
       <ProcessingLogs logs={document.processingLogs} />
     </section>
