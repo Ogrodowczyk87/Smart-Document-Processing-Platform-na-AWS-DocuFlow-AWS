@@ -1,3 +1,4 @@
+import { createDocument } from "../services/documentService.js";
 import type { Document } from "../types/document.js";
 
 type CreateDocumentRequest = {
@@ -9,29 +10,21 @@ type CreateDocumentRequest = {
 };
 
 type CreateDocumentResponse = {
-    document: Document
-}
+  document: Document;
+};
 
-export async function handler (
-    request: CreateDocumentRequest,
+export async function handler(
+  request: CreateDocumentRequest,
 ): Promise<CreateDocumentResponse> {
-    const now = new Date().toISOString()
-
-    const document: Document = {
-        documentId: crypto.randomUUID(),
-    fileName: request.fileName,
-    fileType: request.fileType,
-    fileSize: request.fileSize,
-    storageKey: request.storageKey,
-    status: "UPLOADED",
-    uploadedAt: now,
-    updatedAt: now,
-    userId: request.userId,
-    metadata: {},
-    processingResult: {},
-    }
-
-    return {
-        document,
-    }
+  return {
+    document: createDocument({
+      fileName: request.fileName,
+      fileType: request.fileType,
+      fileSize: request.fileSize,
+      storageKey: request.storageKey,
+      userId: request.userId,
+      metadata: {},
+      processingResult: {},
+    }),
+  };
 }
