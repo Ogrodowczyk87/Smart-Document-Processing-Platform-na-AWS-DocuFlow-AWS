@@ -1,3 +1,4 @@
+import { getDocumentById } from "../services/documentService.js";
 import type { Document } from "../types/document.js";
 
 type GetDocumentByIdRequest = {
@@ -11,9 +12,7 @@ type GetDocumentByIdResponse = {
 export async function handler(
   request: GetDocumentByIdRequest,
 ): Promise<GetDocumentByIdResponse> {
-  console.log("Getting document by id:", request.documentId);
-
   return {
-    document: null,
+    document: getDocumentById(request.documentId),
   };
 }
