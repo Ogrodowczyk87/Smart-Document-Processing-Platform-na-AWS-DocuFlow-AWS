@@ -1,3 +1,5 @@
+import { createUploadUrl } from "../services/storageService.js";
+
 type CreateUploadUrlRequest = {
   fileName: string;
   fileType: string;
@@ -11,10 +13,8 @@ type CreateUploadUrlResponse = {
 export async function handler(
   request: CreateUploadUrlRequest,
 ): Promise<CreateUploadUrlResponse> {
-  const storageKey = `documents/${crypto.randomUUID()}-${request.fileName}`;
-
-  return {
-    uploadUrl: `https://example-upload-url.local/${storageKey}`,
-    storageKey,
-  };
+  return createUploadUrl({
+    fileName: request.fileName,
+    fileType: request.fileType,
+  });
 }
