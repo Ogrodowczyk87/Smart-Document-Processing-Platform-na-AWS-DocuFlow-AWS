@@ -1,3 +1,4 @@
+import { listDocuments } from "../services/documentService.js";
 import type { Document } from "../types/document.js";
 
 type GetDocumentsResponse = {
@@ -6,6 +7,6 @@ type GetDocumentsResponse = {
 
 export async function handler(): Promise<GetDocumentsResponse> {
   return {
-    documents: [],
+    documents: listDocuments(),
   };
 }
