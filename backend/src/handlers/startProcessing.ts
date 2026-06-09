@@ -1,21 +1,24 @@
+import { updateDocumentStatus } from "../services/documentService.js";
+import type { Document } from "../types/document.js";
+
 type StartProcessingRequest = {
   documentId: string;
 };
 
 type StartProcessingResponse = {
-  documentId: string;
-  status: "PROCESSING";
+  document: Document | null;
   message: string;
 };
 
 export async function handler(
   request: StartProcessingRequest,
 ): Promise<StartProcessingResponse> {
-  console.log("Starting processing for document:", request.documentId);
+  const document = updateDocumentStatus(request.documentId, "PROCESSING");
 
   return {
-    documentId: request.documentId,
-    status: "PROCESSING",
-    message: "Processing workflow started.",
+    document,
+    message: document
+      ? "Processing workflow started."
+      : "Document not found.",
   };
 }
