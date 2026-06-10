@@ -113,20 +113,26 @@ The target serverless architecture will use:
 Planned high-level flow:
 
 ```txt
-Frontend
-  |
-  v
+React Frontend
+      |
+      v
 API Gateway
-  |
-  v
-Lambda
-  |
-  +--> S3
-  +--> DynamoDB
-  +--> Step Functions
-             |
-             v
-        CloudWatch Logs
+      |
+      v
+AWS Lambda
+      |
+      +--> Amazon S3
+      |       stores original uploaded documents
+      |
+      +--> Amazon DynamoDB
+      |       stores document metadata, status, and results
+      |
+      +--> AWS Step Functions
+              runs the document processing workflow
+
+Amazon CloudWatch
+      collects logs, metrics, workflow events, and errors
+      from Lambda and Step Functions
 ```
 
 ## Next Steps
