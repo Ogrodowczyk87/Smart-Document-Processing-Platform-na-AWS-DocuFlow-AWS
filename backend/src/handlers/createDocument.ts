@@ -1,5 +1,6 @@
 import { createDocument } from "../services/documentService.js";
 import type { Document } from "../types/document.js";
+import { validateCreateDocumentRequest } from "../utils/validation.js";
 
 type CreateDocumentRequest = {
   fileName: string;
@@ -16,6 +17,7 @@ type CreateDocumentResponse = {
 export async function handler(
   request: CreateDocumentRequest,
 ): Promise<CreateDocumentResponse> {
+  validateCreateDocumentRequest(request);
   return {
     document: createDocument({
       fileName: request.fileName,
