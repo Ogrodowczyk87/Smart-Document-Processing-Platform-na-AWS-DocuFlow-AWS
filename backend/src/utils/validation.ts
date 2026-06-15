@@ -4,6 +4,12 @@ export function isAllowedFileType(fileType: string): boolean {
   return allowedFileTypes.includes(fileType);
 }
 
+export function validateDocumentId(documentId: string): void {
+  if (!documentId) {
+    throw new Error("documentId is required.");
+  }
+}
+
 export function validateCreateDocumentRequest(input: {
   fileName: string;
   fileType: string;
