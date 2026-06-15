@@ -1,5 +1,7 @@
-import { getDocumentById } from "../services/documentService.js";
+import { startProcessing } from "../services/processingService.js";
 import type { Document } from "../types/document.js";
+import { validateDocumentId } from "../utils/validation.js";
+
 
 type GetDocumentByIdRequest = {
   documentId: string;
@@ -12,7 +14,8 @@ type GetDocumentByIdResponse = {
 export async function handler(
   request: GetDocumentByIdRequest,
 ): Promise<GetDocumentByIdResponse> {
-  return {
-    document: getDocumentById(request.documentId),
-  };
+  validateDocumentId(request.documentId);
+
+  return   startProcessing(request.documentId)
+  
 }
