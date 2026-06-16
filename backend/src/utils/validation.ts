@@ -41,3 +41,20 @@ export function validateCreateDocumentRequest(input: {
     throw new Error("userId is required.");
   }
 }
+
+export function validateCreateUploadUrlRequest(input: {
+  fileName: string;
+  fileType: string;
+}): void {
+  if (!input.fileName) {
+    throw new Error("fileName is required.");
+  }
+
+  if (!input.fileType) {
+    throw new Error("fileType is required.");
+  }
+
+  if (!isAllowedFileType(input.fileType)) {
+    throw new Error("Unsupported file type.");
+  }
+}
