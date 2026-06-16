@@ -1,5 +1,6 @@
 import { startProcessing } from "../services/processingService.js";
 import type { Document } from "../types/document.js";
+import { validateDocumentId } from "../utils/validation.js";
 
 type StartProcessingRequest = {
   documentId: string;
@@ -13,5 +14,7 @@ type StartProcessingResponse = {
 export async function handler(
   request: StartProcessingRequest,
 ): Promise<StartProcessingResponse> {
+  validateDocumentId(request.documentId);
+
   return startProcessing(request.documentId);
 }
