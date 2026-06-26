@@ -1,5 +1,5 @@
 import { createUploadUrl } from "../services/storageService.js";
-import { isAllowedFileType } from "../utils/validation.js";
+import { validateCreateUploadUrlRequest } from "../utils/validation.js";
 
 type CreateUploadUrlRequest = {
   fileName: string;
@@ -14,17 +14,7 @@ type CreateUploadUrlResponse = {
 export async function handler(
   request: CreateUploadUrlRequest,
 ): Promise<CreateUploadUrlResponse> {
-  if (!request.fileName) {
-    throw new Error("fileName is required.");
-  }
-
-  if (!request.fileType) {
-    throw new Error("fileType is required.");
-  }
-
-  if (!isAllowedFileType(request.fileType)) {
-    throw new Error("Unsupported file type.");
-  }
+  validateCreateUploadUrlRequest(request);
 
   return createUploadUrl({
     fileName: request.fileName,
