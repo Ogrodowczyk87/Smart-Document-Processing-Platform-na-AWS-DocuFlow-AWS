@@ -1,5 +1,19 @@
-import { describe, expect, it } from "vitest";
+import {
+  afterEach,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi,
+} from "vitest";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { createUploadUrl } from "./storageService.js";
+
+vi.mock("@aws-sdk/s3-request-presigner", () => ({
+  getSignedUrl: vi.fn(),
+}));
+
+const mockedGetSignedUrl = vi.mocked(getSignedUrl);
 
 describe("createUploadUrl", () => {
   const validInput = {
@@ -7,17 +21,45 @@ describe("createUploadUrl", () => {
     fileType: "application/pdf",
   };
 
-  it("creates a storage key for the file", () => {
-    const result = createUploadUrl(validInput);
+  beforeEach(() => {
+    process.env.DOCUMENTS_BUCKET_NAME =
+      "test-documents-bucket";
 
-    expect(result.storageKey).toContain("invoice.pdf");
-    expect(result.storageKey.startsWith("documents/")).toBe(true);
+    mockedGetSignedUrl.mockResolvedValue(
+      "https://signed-upload-url.example",
+    );
   });
 
-  it("returns an upload URL containing the storage key", () => {
-    const result = createUploadUrl(validInput);
+  afterEach(() => {
+    delete process.env.DOCUMENTS_BUCKET_NAME;
+    vi.clearAllMocks();
+  });
 
-    expect(result.uploadUrl).toContain(result.storageKey);
-    expect(result.uploadUrl.startsWith("https://")).toBe(true);
+  it("creates a storage key for the file", async () => {
+    const result = await createUploadUrl(validInput);
+
+    expect(result.storageKey).toContain("invoice.pdf");
+    expect(
+      result.storageKey.startsWith("documents/"),
+    ).toBe(true);
+  });
+
+  it("returns a signed upload URL", async () => {
+    const result = await createUploadUrl(validInput);
+
+    expect(result.uploadUrl).toBe(
+      "https://signed-upload-url.example",
+    );
+    expect(mockedGetSignedUrl).toHaveBeenCalledOnce();
+  });
+
+  it("throws when bucket name is missing", async () => {
+    delete process.env.DOCUMENTS_BUCKET_NAME;
+
+    await expect(
+      createUploadUrl(validInput),
+    ).rejects.toThrow(
+      "DOCUMENTS_BUCKET_NAME is required.",
+    );
   });
 });
