@@ -6,9 +6,10 @@ import {
 } from "aws-cdk-lib";
 import * as iam from "aws-cdk-lib/aws-iam";
 import * as lambda from "aws-cdk-lib/aws-lambda";
-import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 import * as s3 from "aws-cdk-lib/aws-s3";
+import * as logs from "aws-cdk-lib/aws-logs";
 import { Construct } from "constructs";
+import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 
 export class DocuFlowStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
@@ -35,11 +36,22 @@ export class DocuFlowStack extends Stack {
 
     const backendRoot = path.join(__dirname, "../../backend");
 
+   const createUploadUrlLogGroup = new logs.LogGroup(
+    this,
+    "CreateUploadUrlLogGroup",
+    {
+      logGroupName: "/docuflow/lambda/create-upload-url",
+      retention: logs.RetentionDays.ONE_WEEK,
+      removalPolicy: RemovalPolicy.DESTROY,
+    },
+  );
+
     const createUploadUrlFunction = new NodejsFunction(
       this,
       "CreateUploadUrlFunction",
       {
         runtime: lambda.Runtime.NODEJS_24_X,
+        logGroup: createUploadUrlLogGroup,
         entry: path.join(
           backendRoot,
           "src/handlers/createUploadUrl.ts",
