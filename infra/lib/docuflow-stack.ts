@@ -10,7 +10,9 @@ import * as s3 from "aws-cdk-lib/aws-s3";
 import * as logs from "aws-cdk-lib/aws-logs";
 import { Construct } from "constructs";
 import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
-
+import * as apigatewayv2 from "aws-cdk-lib/aws-apigatewayv2";
+import * as integrations from "aws-cdk-lib/aws-apigatewayv2-integrations";
+import { CfnOutput } from "aws-cdk-lib";
 export class DocuFlowStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
@@ -45,40 +47,63 @@ export class DocuFlowStack extends Stack {
       removalPolicy: RemovalPolicy.DESTROY,
     },
   );
-
-    const createUploadUrlFunction = new NodejsFunction(
-      this,
-      "CreateUploadUrlFunction",
-      {
-        runtime: lambda.Runtime.NODEJS_24_X,
-        logGroup: createUploadUrlLogGroup,
-        entry: path.join(
-          backendRoot,
-          "src/handlers/createUploadUrl.ts",
-        ),
-        projectRoot: backendRoot,
-        depsLockFilePath: path.join(
-          backendRoot,
-          "package-lock.json",
-        ),
-        handler: "handler",
-        environment: {
-          DOCUMENTS_BUCKET_NAME: documentsBucket.bucketName,
-        },
-        bundling: {
-          bundleAwsSDK: true,
-          minify: true,
-          sourceMap: true,
-          target: "node24",
-        },
+  
+  
+  const createUploadUrlFunction = new NodejsFunction(
+    this,
+    "CreateUploadUrlFunction",
+    {
+      runtime: lambda.Runtime.NODEJS_24_X,
+      logGroup: createUploadUrlLogGroup,
+      entry: path.join(
+        backendRoot,
+        "src/handlers/createUploadUrl.ts",
+      ),
+      projectRoot: backendRoot,
+      depsLockFilePath: path.join(
+        backendRoot,
+        "package-lock.json",
+      ),
+      handler: "handler",
+      environment: {
+        DOCUMENTS_BUCKET_NAME: documentsBucket.bucketName,
       },
-    );
-
-    createUploadUrlFunction.addToRolePolicy(
-      new iam.PolicyStatement({
-        actions: ["s3:PutObject"],
-        resources: [documentsBucket.arnForObjects("documents/*")],
-      }),
-    );
-  }
+      bundling: {
+        bundleAwsSDK: true,
+        minify: true,
+        sourceMap: true,
+        target: "node24",
+      },
+    },
+  );
+  
+  createUploadUrlFunction.addToRolePolicy(
+    new iam.PolicyStatement({
+      actions: ["s3:PutObject"],
+      resources: [documentsBucket.arnForObjects("documents/*")],
+    }),
+  );
+  const httpApi = new apigatewayv2.HttpApi(this, "DocuFlowHttpApi", {
+    apiName: "docuflow-api",
+    corsPreflight: {
+      allowOrigins: ["http://localhost:5173"],
+      allowMethods: [apigatewayv2.CorsHttpMethod.POST],
+      allowHeaders: ["Content-Type"],
+    },
+  });
+  
+  httpApi.addRoutes({
+    path: "/upload-url",
+    methods: [apigatewayv2.HttpMethod.POST],
+    integration: new integrations.HttpLambdaIntegration(
+      "CreateUploadUrlIntegration",
+      createUploadUrlFunction,
+    ),
+  });
+  
+  new CfnOutput(this, "DocuFlowApiUrl", {
+    value: httpApi.url ?? "API URL not available",
+  });
+  
+}
 }
