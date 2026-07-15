@@ -6,20 +6,6 @@ export type DocumentStatus =
   | "COMPLETED"
   | "FAILED";
 
-export type Document = {
-  documentId: string;
-  fileName: string;
-  fileType: string;
-  fileSize: number;
-  s3Key: string;
-  status: DocumentStatus;
-  uploadedAt: string;
-  updatedAt: string;
-  userId: string;
-  metadata?: Record<string, unknown>;
-  processingResult?: Record<string, unknown>;
-};
-
 export type DocumentFileType = "PDF" | "TXT" | "CSV";
 
 export type DocumentMetadata = {
@@ -48,6 +34,7 @@ export type Document = {
   fileName: string;
   fileType: DocumentFileType;
   fileSize: number;
+  s3Key?: string;
   uploadedAt: string;
   status: DocumentStatus;
   metadata: DocumentMetadata;

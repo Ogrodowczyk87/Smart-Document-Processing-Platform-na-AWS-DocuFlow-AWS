@@ -2,6 +2,10 @@ import { useState } from "react";
 import { UploadDropzone } from "../components/upload/UploadDropzone";
 import { UploadProgress } from "../components/upload/UploadProgress";
 import { useDocumentContext } from "../context/DocumentContext";
+import {
+  createUploadUrl,
+  uploadFileToS3,
+} from "../services/documentService";
 import type { Document, DocumentFileType } from "../types/document";
 
 function getFileType(fileName: string): DocumentFileType {
@@ -25,45 +29,63 @@ export function Upload() {
   const [progress, setProgress] = useState(0);
   const [isUploading, setIsUploading] = useState(false);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  function handleFileSelect(file: File) {
+  async function handleFileSelect(file: File) {
     setSelectedFileName(file.name);
     setProgress(0);
     setIsUploading(true);
     setSuccessMessage(null);
+    setErrorMessage(null);
 
-    let currentProgress = 0;
+    try {
+      setProgress(20);
 
-    const intervalId = window.setInterval(() => {
-      currentProgress += 20;
-      setProgress(currentProgress);
+      const { uploadUrl, storageKey } = await createUploadUrl({
+        fileName: file.name,
+        fileType: file.type,
+      });
 
-      if (currentProgress >= 100) {
-        window.clearInterval(intervalId);
+      setProgress(60);
 
-        const newDocument: Document = {
-          id: `doc-${Date.now()}`,
-          fileName: file.name,
-          fileType: getFileType(file.name),
-          fileSize: file.size,
-          uploadedAt: new Date().toISOString(),
-          status: "UPLOADED",
-          metadata: {},
-          processingLogs: [
-            {
-              id: `log-${Date.now()}`,
-              timestamp: new Date().toISOString(),
-              status: "UPLOADED",
-              message: "Document uploaded locally.",
-            },
-          ],
-        };
+      await uploadFileToS3(uploadUrl, file);
 
-        addDocument(newDocument);
-        setIsUploading(false);
-        setSuccessMessage("Document uploaded successfully.");
+      setProgress(100);
+
+      const now = new Date().toISOString();
+
+      const newDocument: Document = {
+        id: `doc-${Date.now()}`,
+        fileName: file.name,
+        fileType: getFileType(file.name),
+        fileSize: file.size,
+        s3Key: storageKey,
+        uploadedAt: now,
+        status: "UPLOADED",
+        metadata: {},
+        processingLogs: [
+          {
+            id: `log-${Date.now()}`,
+            timestamp: now,
+            status: "UPLOADED",
+            message: `Document uploaded to S3: ${storageKey}`,
+          },
+        ],
+      };
+
+      addDocument(newDocument);
+      setSuccessMessage("Document uploaded to S3 successfully.");
+    } catch (error) {
+      setProgress(0);
+
+      if (error instanceof Error) {
+        setErrorMessage(error.message);
+      } else {
+        setErrorMessage("Upload failed.");
       }
-    }, 300);
+    } finally {
+      setIsUploading(false);
+    }
   }
 
   return (
@@ -72,7 +94,7 @@ export function Upload() {
         <p className="page-eyebrow">New document</p>
         <h2 className="page-title">Upload workspace</h2>
         <p className="page-description">
-          Add PDF, TXT, or CSV files to the local document workflow.
+          Add PDF, TXT, or CSV files to the document workflow.
         </p>
       </div>
 
@@ -86,13 +108,19 @@ export function Upload() {
 
           {isUploading && (
             <p className="mt-1 text-sm text-[#74807c]">
-              Uploading file locally...
+              Uploading file to S3...
             </p>
           )}
 
           {successMessage && (
             <p className="mt-1 text-sm font-semibold text-[#387247]">
               {successMessage}
+            </p>
+          )}
+
+          {errorMessage && (
+            <p className="mt-1 text-sm font-semibold text-red-600">
+              {errorMessage}
             </p>
           )}
         </div>
